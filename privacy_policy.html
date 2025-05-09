@@ -1,0 +1,159 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Tracker Privacy Policy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+    }
+    h1, h2 {
+      color: #1a73e8;
+    }
+    ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    p, li {
+      font-size: 16px;
+    }
+    a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Flight Tracker Privacy Policy</h1>
+  <p><strong>Last updated: May 15, 2025</strong></p>
+  <p>This Privacy Policy describes how Flight Tracker ("the App", "We", "Us", or "Our") collects, uses, and shares your information when you use the App. By using the App, you agree to the collection and use of information in accordance with this Privacy Policy. This policy was created with the help of the <a href="https://www.freeprivacypolicy.com/free-privacy-policy-generator/" target="_blank">Free Privacy Policy Generator</a>.</p>
+
+  <h2>About Flight Tracker</h2>
+  <p>Flight Tracker is a mobile application developed by Yossi Levi, based in Israel. The App allows users to track flights and provides map functionality, with a free version supported by ads and an optional in-app purchase to remove ads.</p>
+
+  <h2>Types of Data Collected</h2>
+  <h3>Personal Data</h3>
+  <p>The App does not collect personally identifiable information such as your name, email address, or phone number unless you contact us directly. However, we may collect the following data:</p>
+  <ul>
+    <li><strong>Location Data</strong>: If you enable location services, the App accesses your approximate or precise location to provide map functionality (e.g., showing your position or nearby airports) via Google Maps. This data is used in real-time and is not stored by the App. You can enable or disable location access at any time through your device settings.</li>
+    <li><strong>Device Information</strong>: We collect device identifiers (e.g., device ID, IP address) and other diagnostic data through Google Mobile Ads to provide personalized advertising in the free version.</li>
+    <li><strong>Purchase Data</strong>: If you purchase the "Remove Ads" in-app feature, we collect purchase history and transaction details, processed securely by Google Play.</li>
+    <li><strong>Usage Data</strong>: We collect anonymous data about how you interact with the App (e.g., pages visited, features used) to monitor and improve the App’s performance.</li>
+  </ul>
+
+  <h3>How We Collect Data</h3>
+  <ul>
+    <li><strong>Automatically</strong>: Device Information and Usage Data are collected automatically when you use the App, such as your device’s IP address, operating system, and interaction patterns.</li>
+    <li><strong>With Permission</strong>: Location Data is collected only with your explicit permission via Android location settings.</li>
+    <li><strong>Through Third Parties</strong>: Purchase Data is collected via Google Play’s billing system.</li>
+  </ul>
+
+  <h2>Use of Your Personal Data</h2>
+  <p>We use your data for the following purposes:</p>
+  <ul>
+    <li><strong>To Provide and Maintain the App</strong>: Location Data enables map functionality; Device Information supports ad delivery; Purchase Data facilitates the "Remove Ads" feature.</li>
+    <li><strong>To Improve the App</strong>: Usage Data helps us analyze trends and enhance features.</li>
+    <li><strong>To Process Transactions</strong>: Purchase Data ensures successful in-app purchases via Google Play.</li>
+    <li><strong>To Comply with Legal Obligations</strong>: We may use data to meet legal requirements or resolve disputes.</li>
+  </ul>
+
+  <h2>Sharing Your Personal Data</h2>
+  <p>We share your data only in the following cases:</p>
+  <ul>
+    <li><strong>With Service Providers</strong>: We share data with Google for:
+      <ul>
+        <li>Google Maps (Location Data for map functionality).</li>
+        <li>Google Mobile Ads (Device Information for personalized ads).</li>
+        <li>Google Play (Purchase Data for in-app purchases).</li>
+      </ul>
+    </li>
+    <li><strong>For Legal Reasons</strong>: We may disclose data if required by law or to protect our rights, users, or the public.</li>
+    <li><strong>With Your Consent</strong>: We share data for other purposes only with your explicit consent.</li>
+  </ul>
+  <p>We do not share your data with other third parties unless specified above or required by law.</p>
+
+  <h2>Retention of Your Personal Data</h2>
+  <ul>
+    <li><strong>Location Data</strong>: Not stored; used only in real-time for map functionality.</li>
+    <li><strong>Device Information</strong>: Retained by Google Mobile Ads as needed for ad services, subject to Google’s policies.</li>
+    <li><strong>Purchase Data</strong>: Retained by Google Play as needed for transaction records, subject to Google’s policies.</li>
+    <li><strong>Usage Data</strong>: Retained anonymously for as long as necessary to improve the App, unless required for legal purposes.</li>
+  </ul>
+  <p>We retain data only as long as necessary for the purposes outlined or to comply with legal obligations.</p>
+
+  <h2>Security of Your Personal Data</h2>
+  <p>We use industry-standard measures to protect your data, such as encryption for data in transit (e.g., via Google Play and Google Maps). However, no method of transmission or storage is 100% secure, and we cannot guarantee absolute security.</p>
+
+  <h2>Your Privacy Rights</h2>
+  <p>You have the right to:</p>
+  <ul>
+    <li><strong>Disable Location Data</strong>: Turn off location services in your device settings.</li>
+    <li><strong>Opt Out of Personalized Ads</strong>: Adjust ad settings on your device to limit ad tracking.</li>
+    <li><strong>Request Data Deletion</strong>: Contact us to request deletion of any data we hold, subject to legal obligations.</li>
+    <li><strong>Review Google’s Policies</strong>: For data handled by Google (ads, maps, purchases), see <a href="https://policies.google.com/privacy" target="_blank">Google’s Privacy Policy</a>.</li>
+  </ul>
+  <p>To exercise these rights, contact us at the email below.</p>
+
+  <h2>Children’s Privacy</h2>
+  <p>The App is not intended for users under 13. We do not knowingly collect data from children under 13. If we learn that such data has been collected, we will delete it promptly.</p>
+
+  <h2>Links to Third-Party Services</h2>
+  <p>The App uses Google Maps and Google Mobile Ads, which are governed by <a href="https://policies.google.com/privacy" target="_blank">Google’s Privacy Policy</a>. We are not responsible for the privacy practices of third-party services.</p>
+
+  <h2>Changes to This Privacy Policy</h2>
+  <p>We may update this Privacy Policy to reflect changes in our practices or legal requirements. We will notify you by updating the “Last updated” date and posting the new policy at this URL. Significant changes may be communicated via email or in-app notice.</p>
+
+  <h2>Contact Us</h2>
+  <p>For questions or to exercise your privacy rights, contact us at:</p>
+  <ul>
+    <li><strong>Email</strong>: yossi.flighttracker@gmail.com</li>
+  </ul>
+</body>
+</html>
